@@ -1,12 +1,15 @@
 ---
 title: "Simulating Magnet in Python"
 subtitle: "Monte Carlo algorithms : Simulate a collective mechanical behaviour of tiny magnets"
+author: "Suhas. P. K"
+reference: "https://www.udemy.com/course/computational-physics/"
 date: "`r Sys.Date()`"
 output:
   rmdformats::downcute:
     self_contained: true
     default_style: "dark"
     downcute_theme: "chaos"
+    toc : 5
 ---
 
 
@@ -71,11 +74,84 @@ And we will really try this for this magnet and we will see that it brings about
 
 ```{python libraries}
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+
+
+dark_style = {
+    'axes.facecolor': 'black',
+    'axes.edgecolor': 'white',
+    'axes.labelcolor': 'white',
+    'xtick.color': 'white',
+    'ytick.color': 'white',
+    'text.color': 'white',
+    'figure.facecolor': 'black',
+    'figure.edgecolor': 'black',
+    'grid.color': 'gray',
+}
+
+# Apply the custom style
+plt.rcParams.update(dark_style)
 ```
 
+### Measure the are ratio by counting randomly generated points.
+
+```{python}
+
+points = 100000
+
+rand = 2*np.random.rand(2*points) -1
+rand_points = rand.reshape(points, 2)
+
+norm_points_sqr = rand_points[:,0]**2 + rand_points[:,1]**2
+
+points_in = rand_points[norm_points_sqr <= 1]
+points_out = rand_points[norm_points_sqr > 1]
+
+pi_approx = 4*len(points_in)/points
+
+print('Approximated pi value = %f'%(pi_approx))
+print('Pi in numpy = %f'%(np.pi ))
+```
+
+### Preparing my canvas 
+
+```{python }
+figure = plt.figure()
+ax = figure.add_subplot(111, aspect='equal')
 
 
+circle = patches.Circle((0,0),1, facecolor = 'none', edgecolor='blue')
+ax.add_patch(circle)
+
+plt.grid(False)
+plt.xlim([-1.1,1.1])
+plt.ylim([-1.1,1.1])
+
+plt.scatter(
+  points_in[:,0], points_in[:,1],
+  color = 'green', s = 0.5 
+)
+
+plt.scatter(
+  points_out[:,0], points_out[:,1],
+  color = 'red', s = 0.05
+)
+
+plt.plot([0, 1], [0, 0], marker='o', color='k', label=" 1 unit radius")
+
+plt.title("Monte Carlo Approximation of $\pi$")
+
+plt.legend()
+plt.show()
+```
+## Playing with magnets
+
+### Generate start configuration
+
+$$ \vec{m_i} = \begin{bmatrix} \cos(\phi_i)\sin(\theta_i) \\
+\sin(\phi_i)\sin(\theta_i) \\
+\cos(\theta_i)
+\end{bmatrix}$$
 
 
