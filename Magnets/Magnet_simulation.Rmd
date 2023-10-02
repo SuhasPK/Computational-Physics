@@ -1,0 +1,81 @@
+---
+title: "Simulating Magnet in Python"
+subtitle: "Monte Carlo algorithms : Simulate a collective mechanical behaviour of tiny magnets"
+date: "`r Sys.Date()`"
+output:
+  rmdformats::downcute:
+    self_contained: true
+    default_style: "dark"
+    downcute_theme: "chaos"
+---
+
+
+```{r setup, include=FALSE}
+## Global options
+knitr::opts_chunk$set(cache = TRUE)
+knitr::knit_engines$set(python =
+reticulate::eng_python)
+```
+## Initial environment set up. 
+R has a cross-platform library called ```reticulate```, which helps user to use python in R interface. This is when you can get best out of both world. I find it interesting when people create factions on using R or Python, even I was one of them till I started to to use both. Both R and Python has its strengths and weakness. 
+But for this scenario I can best of both. This is because, its easy to publish your work on **Rpubs** in the Rstudion IDE. But I find it very hard in case of python. Ofcourse, github pages is one of the best options. But somehow this makes me comfortable.
+Hence, this work around. 
+
+Now, install the package ```reticulate```, and load the library.
+
+```
+if (!require(tidyr)){
+  install.packages("tidyr")
+  library(tidyr)
+  }
+  
+```
+
+```{r Reticulate}
+library(reticulate)
+```
+
+Create a virtual environment. This virtual environment will have basic python libraries. I am naming this virtual environment as ```Rphysics```. Feel free to name it. This line of code is made to run in r-code-chunck.
+
+```{r creating Venv}
+virtualenv_create("Rphysics")
+```
+Now let us load the python in R session. For this we use function ```repl_python()```, which provides a Python REPL in the R session. This can be used to interactively run python code.This line of code is made to run in r-code-chunck.
+
+```{r Python REPL }
+repl_python()
+```
+Finally, we use the virtual environment that we created earlier. This line of code is made to run in r-code-chunck.
+
+```{r loading Venv}
+virtualenv_python("Rphysics")
+```
+This end my initial setup.
+
+## Introduction
+The **Monte Calro simulation** is mathematical technique that predicts possible outcomes of an uncertain event. Here,  the key concept is **randomness**.
+As an introduction, using Monte carlo simulation, we get a good approximation of $\pi$. And then we will use this in a physica problem where we will simulate the collective behaviour of a magnet.
+
+A magnet consists of individual tiny magnets.(For your understanding only, don't take it literally!). And all these magnets can point along all three directions in space, and they insteract with each other.
+So it means when you try to minimize here or error, then it really takes an enormous amount of time.
+
+So instead, you minimize the error by just randomly reorienting individual magnets and checking if
+the error has reduced.
+
+And if this is the case, then you accept the chain to change.
+And if not, then you disregard the change.
+
+And we will really try this for this magnet and we will see that it brings about a lot of advantages.
+
+## Monte Carlo algorithm for π
+
+```{python libraries}
+import numpy as np
+import matplotlib as plt
+import matplotlib.patches as patches
+```
+
+
+
+
+
